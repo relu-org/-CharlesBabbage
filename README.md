@@ -2,7 +2,7 @@
 
 Get content from GITHUB and storage it into JavaScript object
 
-`
+```javascript
 /* Example usage - download README.md file from this repo */
 _GITHUB.get_content({
 	'repo':'relu-org/CharlesBabbage/',
@@ -14,4 +14,4 @@ _GITHUB.get_content({
 		console.log('--LOADED DATA--');
 		console.log(_GITHUB.data);
 });
-`
+```
