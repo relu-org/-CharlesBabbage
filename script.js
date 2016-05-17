@@ -3,42 +3,54 @@ var _GITHUB = {
 	response:{},
 	counter:0,
 	filter:'',
-	path:'',
-	get_list: function(path, branch, filter){
-		this.path = path;
-		if(!filter){
+	repo:'',
+	get_content: function(properties, finished){
+		this.finished = finished;
+		this.repo = properties.repo;
+		this.filter = properties.filter;
+		if(!this.filter){
 			this.filter = null;
 		}
 		loadFile( function(response) {
 			_GITHUB.response = JSON.parse(response);
-			_GITHUB.load(filter);
-		}, 'https://api.github.com/repos/'+path+'git/trees/'+branch); 
+			_GITHUB.load();
+		}, 'https://api.github.com/repos/'+this.repo+'git/trees/'+properties.branch); 
 	},
-	load: function(filter){
+	load: function(){
 		_this = this;
-		if(filter){
-			res = this.response.tree[this.counter].path.search(filter);
+		if(this.filter){
+			res = this.response.tree[this.counter].path.search(this.filter);
 		}else{
 			res = '1';
 		}
 		if(	res != '-1' ){
 			loadFile( function(response) {
 				_this.data[_this.response.tree[_this.counter].path] = JSON.parse(response).content;
-				_this.next_call(filter);
+				_this.next_call();
 			}, this.response.tree[this.counter].url); 
 		}else{
-			this.next_call(filter);
+			this.next_call();
 		}
 	},
-	next_call: function(filter){
+	next_call: function(){
 		this. counter++;
 		if(this.counter != this.response.tree.length){
-			_GITHUB.load(filter);
+			_GITHUB.load();
 		}else{
-			console.log('--LOADED DATA--');
-			console.log(this.data);
+			this.finished();
 		}
 	}
 }
 
-_GITHUB.get_list('relu-org/ArthurWellesleyCSSconcept/','master','README');
+/* Example usage - download README.md file from this repo */
+
+_GITHUB.get_content({
+	'repo':'relu-org/CharlesBabbage/',
+	'branch':'master',
+	'filter':'README'
+	},
+	/* callback */
+	function() {
+    	console.log('--LOADED DATA--');
+		console.log(_GITHUB.data);
+});
