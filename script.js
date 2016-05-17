@@ -25,7 +25,9 @@ var _GITHUB = {
 		}
 		if(	res != '-1' ){
 			loadFile( function(response) {
-				_this.data[_this.repo] = {};
+				if(!_this.data[_this.repo]){
+					_this.data[_this.repo] = {};
+				}
 				_this.data[_this.repo][_this.response.tree[_this.counter].path] = JSON.parse(response).content;
 				_this.next_call();
 			}, this.response.tree[this.counter].url); 
