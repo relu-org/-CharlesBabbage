@@ -25,7 +25,8 @@ var _GITHUB = {
 		}
 		if(	res != '-1' ){
 			loadFile( function(response) {
-				_this.data[_this.response.tree[_this.counter].path] = JSON.parse(response).content;
+				_this.data[_this.repo] = {};
+				_this.data[_this.repo][_this.response.tree[_this.counter].path] = JSON.parse(response).content;
 				_this.next_call();
 			}, this.response.tree[this.counter].url); 
 		}else{
@@ -50,6 +51,6 @@ _GITHUB.get_content({
 	},
 	/* callback */
 	function() {
-    	console.log('--LOADED DATA--');
+		console.log('--LOADED DATA--');
 		console.log(_GITHUB.data);
 });
