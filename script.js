@@ -43,7 +43,6 @@ var _GITHUB = {
 }
 
 /* Example usage - download README.md file from this repo */
-
 _GITHUB.get_content({
 	'repo':'relu-org/CharlesBabbage/',
 	'branch':'master',
